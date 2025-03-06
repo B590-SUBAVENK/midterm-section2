@@ -4,6 +4,7 @@
     android:id="@+id/navigation_graph"
     app:startDestination="@id/loginFragment">
 
+    <!-- Login Fragment -->
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.iub.midterm_section2.LoginFragment"
@@ -14,9 +15,19 @@
             app:destination="@id/postsFragment" />
     </fragment>
 
+    <!-- Posts Fragment -->
     <fragment
         android:id="@+id/postsFragment"
         android:name="com.iub.midterm_section2.PostsFragment"
         android:label="Posts Fragment"
-        tools:layout="@layout/fragment_posts" />
+        tools:layout="@layout/fragment_posts">
+
+        <!-- Action to navigate back to loginFragment when user logs out -->
+        <action
+            android:id="@+id/action_postsFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
+
 </navigation>
