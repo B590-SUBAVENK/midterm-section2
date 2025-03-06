@@ -2,20 +2,18 @@ package com.iub.midterm_section2
 
 import android.os.Bundle
 import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.appcompat.app.AppCompatActivity
 import com.iub.midterm_section2.databinding.FragmentPostsBinding
 import com.google.firebase.auth.FirebaseAuth
-import androidx.credentials.CredentialManager
-import androidx.credentials.CreatePasswordRequest
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import com.iub.midterm_section2.model.Post
+import com.iub.midterm_section2.R
 import kotlinx.coroutines.launch
 
 class PostsFragment : Fragment() {
@@ -23,7 +21,7 @@ class PostsFragment : Fragment() {
     private var _binding: FragmentPostsBinding? = null
     private val binding get() = _binding!!
     private lateinit var auth: FirebaseAuth
-    private val postViewModel : PostViewModel by viewModels()
+    private val postViewModel: PostViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,10 +35,14 @@ class PostsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Setup Toolbar
+        val toolbar = binding.toolbar
+        (activity as AppCompatActivity).setSupportActionBar(toolbar)
+        setHasOptionsMenu(true)
+
         viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(
-                Lifecycle.State.STARTED
-            ) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 postViewModel.posts.collect { posts ->
                     binding.rvPosts.adapter = PostsAdapter(posts)
                 }
@@ -49,11 +51,6 @@ class PostsFragment : Fragment() {
 
         // Redirect to login if user is not authenticated
         if (auth.currentUser == null) {
-            goToLoginScreen()
-        }
-
-        binding.btnLogout.setOnClickListener {
-            auth.signOut()
             goToLoginScreen()
         }
 
@@ -66,6 +63,24 @@ class PostsFragment : Fragment() {
     private fun goToLoginScreen() {
         findNavController().navigate(R.id.loginFragment)
     }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_toolbar, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_logout -> {
+                FirebaseAuth.getInstance().signOut()
+                findNavController().navigate(R.id.loginFragment)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+
 
     override fun onDestroyView() {
         super.onDestroyView()
