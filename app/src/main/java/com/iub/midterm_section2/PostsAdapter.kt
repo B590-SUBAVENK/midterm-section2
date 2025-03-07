@@ -21,6 +21,18 @@ class PostHolder(private val binding: PostItemBinding)
     private val TAG = "PostHolder"
 
     fun bind(post: Post) {
+
+        // Where you bind your post data, e.g. in holder.bind(post):
+        val profileUrl = post.user?.profileImageUrl
+        if (!profileUrl.isNullOrEmpty()) {
+            binding.ivProfileImage.load(profileUrl) {
+                placeholder(R.drawable.ic_profile_placeholder)
+                error(R.drawable.ic_profile_placeholder)
+            }
+        } else {
+            binding.ivProfileImage.setImageResource(R.drawable.ic_profile_placeholder)
+        }
+
         val username = post.user?.username as String
         binding.tvUsername.text = username
         binding.tvDescription.text = post.description

@@ -55,6 +55,10 @@ class PostsFragment : Fragment() {
             auth.signOut()
             goToLoginScreen()
         }
+        binding.btnProfile.setOnClickListener {
+            findNavController().navigate(R.id.profileFragment)
+        }
+
 
         binding.fabCreate.setOnClickListener {
             Log.d("PostsFragment", "FAB clicked - Navigating to CreateFragment")

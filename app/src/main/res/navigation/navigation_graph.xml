@@ -31,6 +31,9 @@
         <action
             android:id="@+id/navigate_to_createFragment"
             app:destination="@id/createFragment" />
+        <action
+            android:id="@+id/action_postsFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
 
     </fragment>
     <fragment
@@ -43,6 +46,12 @@
             android:id="@+id/navigate_to_postsFragment"
             app:destination="@id/postsFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.iub.midterm_section2.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile" />
 
 
 </navigation>
