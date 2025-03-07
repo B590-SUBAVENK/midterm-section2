@@ -42,8 +42,7 @@ class PostsFragment : Fragment() {
                 Lifecycle.State.STARTED
             ) {
                 postViewModel.posts.collect { posts ->
-                    binding.rvPosts.adapter = PostsAdapter(posts)
-                }
+                    binding.rvPosts.adapter = PostHolder.PostsAdapter(posts)                }
             }
         }
 
